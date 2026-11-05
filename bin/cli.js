@@ -9,14 +9,19 @@ const args = process.argv.slice(3);
 
 const jsonMode = args.includes('--json');
 const quietMode = args.includes('--quiet');
+const noColor = args.includes('--no-color');
 const positional = args.filter(a => !a.startsWith('--'));
+
+if (noColor) {
+  try { require('../lib/ui').disableColor(); } catch {}
+}
 
 function showHelp() {
   process.stdout.write(HELP_TEXT + '\n');
 }
 
 async function main() {
-  if (!command || command === 'help' || command === '--help' || command === '-h') {
+  if (command === 'help' || command === '--help' || command === '-h') {
     showHelp();
     return;
   }
@@ -27,14 +32,21 @@ async function main() {
     return;
   }
 
-  switch (command) {
+  const cmd = command || 'status';
+
+  switch (cmd) {
+    case 'status': {
+      const { renderStatus } = require('../lib/status');
+      renderStatus(jsonMode);
+      break;
+    }
     case 'setup': {
       const { runSetup } = require('../lib/setup');
       runSetup(jsonMode);
       break;
     }
     case 'config': {
-      const { listConfig, getConfig, setConfig } = require('../lib/config');
+      const { listConfig, getConfig, setConfig, explainConfig } = require('../lib/config');
       const sub = positional[0];
       if (!sub || sub === 'list') {
         listConfig(jsonMode);
@@ -42,11 +54,20 @@ async function main() {
         getConfig(positional[1]);
       } else if (sub === 'set') {
         setConfig(positional[1], positional[2]);
+      } else if (sub === 'explain') {
+        explainConfig(positional[1], jsonMode);
       } else {
         process.stderr.write('Unknown config subcommand: ' + sub + '\n');
-        process.stderr.write('Usage: claude-code-cli config [list|get|set]\n');
+        process.stderr.write('Usage: claude-code-cli config [list|get|set|explain]\n');
         process.exitCode = 1;
       }
+      break;
+    }
+    case 'usage': {
+      const { renderUsage } = require('../lib/usage');
+      const projIdx = args.indexOf('--project');
+      const projectFilter = projIdx >= 0 ? args[projIdx + 1] : null;
+      renderUsage(jsonMode, projectFilter);
       break;
     }
     case 'sessions': {

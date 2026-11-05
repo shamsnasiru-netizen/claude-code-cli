@@ -11,11 +11,9 @@ function runCli(...args) {
   return execSync(`node "${CLI_PATH}" ${args.join(' ')}`, { encoding: 'utf-8' });
 }
 
-test('CLI runs without arguments and shows help', () => {
+test('CLI runs without arguments and shows status dashboard', () => {
   const output = runCli();
-  assert.ok(output.includes('claude-code-cli'));
-  assert.ok(output.includes('setup'));
-  assert.ok(output.includes('doctor'));
+  assert.ok(output.includes('claude-code-cli') || output.includes('Claude Code CLI'));
 });
 
 test('CLI help command shows usage', () => {

@@ -1,6 +1,6 @@
 # claude-code-cli
 
-Manage your Claude Code configuration, sessions, and API keys from the terminal.
+Manage your Claude Code configuration, sessions, usage, and API keys from the terminal.
 
 **No API key required to use this tool.** Works alongside [@anthropic-ai/claude-code](https://www.npmjs.com/package/@anthropic-ai/claude-code).
 
@@ -9,6 +9,8 @@ Manage your Claude Code configuration, sessions, and API keys from the terminal.
 Claude Code is a powerful AI coding assistant, but managing its configuration across projects can be tedious. This CLI tool gives you a single command to:
 
 - Check if Claude Code is properly installed and configured
+- View token usage and estimated costs from session data
+- Trace where each configuration setting comes from
 - View and modify settings without editing JSON files by hand
 - List and clean up old session data
 - Verify API key setup across multiple sources
@@ -25,6 +27,12 @@ npm install -g claude-code-cli
 ## Quick Start
 
 ```bash
+# See your Claude Code status at a glance (default command)
+claude-code-cli
+
+# Track token usage and estimated costs
+claude-code-cli usage
+
 # Check if Claude Code is set up correctly
 claude-code-cli setup
 
@@ -43,6 +51,27 @@ claude-code-cli doctor
 
 ## Commands
 
+### `status` (default)
+
+Show a dashboard with Claude Code installation status, API key, session count, last used time, settings summary, and disk usage. Running `claude-code-cli` with no arguments shows this dashboard.
+
+```bash
+claude-code-cli status
+claude-code-cli status --json
+```
+
+### `usage`
+
+Track token usage and estimated costs by parsing session data locally. Shows today/week/month breakdown, per-project attribution, and per-model distribution.
+
+```bash
+claude-code-cli usage
+claude-code-cli usage --project myapp
+claude-code-cli usage --json
+```
+
+> Cost estimates are approximate and based on published per-token rates. This is not billing data.
+
 ### `setup`
 
 Run initial setup verification. Checks Claude Code installation, settings file, API key, and binary availability.
@@ -60,6 +89,16 @@ View and manage Claude Code settings stored in `~/.claude/settings.json`.
 claude-code-cli config list           # Show all settings
 claude-code-cli config get model      # Get a specific setting
 claude-code-cli config set model claude-sonnet-5-5  # Set a value
+```
+
+### `config explain [key]`
+
+Trace where a configuration setting comes from. Shows the full precedence chain across environment variables, project-local, project-shared, and user-level settings files.
+
+```bash
+claude-code-cli config explain model
+claude-code-cli config explain ANTHROPIC_API_KEY
+claude-code-cli config explain        # summary of all settings
 ```
 
 ### `sessions`
@@ -106,6 +145,14 @@ docker run --rm -v ~/.claude:/root/.claude claude-code-cli doctor
 ```
 
 ## Frequently Asked Questions
+
+### How do I see my Claude Code usage and costs?
+
+Run `claude-code-cli usage`. It parses session data locally and shows token consumption by time period, project, and model, with approximate cost estimates. No network requests are made.
+
+### How do I know which settings file is being used?
+
+Run `claude-code-cli config explain <key>` to see the full precedence chain for any setting. It shows which source (environment, project-local, project-shared, or user settings) is providing the effective value.
 
 ### How do I check if Claude Code is installed correctly?
 
