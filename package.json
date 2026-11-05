@@ -1,6 +1,6 @@
 {
   "name": "claude-code-cli",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Manage your Claude Code configuration, sessions, and API keys from the terminal",
   "license": "MIT",
   "main": "./lib/utils.js",
