@@ -1,0 +1,62 @@
+{
+  "name": "claude-code-cli",
+  "version": "0.2.0",
+  "description": "Manage your Claude Code configuration, sessions, and API keys from the terminal",
+  "license": "MIT",
+  "main": "./lib/utils.js",
+  "bin": {
+    "claude-code-cli": "./bin/cli.js"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "index.d.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "cli",
+    "ai",
+    "coding-assistant",
+    "config-manager",
+    "session-manager",
+    "api-key",
+    "developer-tools",
+    "anthropic",
+    "terminal",
+    "command-line",
+    "setup",
+    "doctor",
+    "diagnostics",
+    "productivity",
+    "ai-tools",
+    "llm",
+    "developer-experience",
+    "configuration",
+    "key-management",
+    "nodejs",
+    "javascript",
+    "typescript",
+    "zero-dependency",
+    "privacy-first",
+    "local-first"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "author": "shamsnasiru-netizen",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shamsnasiru-netizen/claude-code-cli.git"
+  },
+  "types": "./index.d.ts",
+  "bugs": {
+    "url": "https://github.com/shamsnasiru-netizen/claude-code-cli/issues"
+  },
+  "homepage": "https://github.com/shamsnasiru-netizen/claude-code-cli#readme"
+}
